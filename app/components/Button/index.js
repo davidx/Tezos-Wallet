@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react'
 import styled, { css } from 'styled-components'
 import { lighten, darken } from 'polished'
@@ -36,7 +38,7 @@ const plainTheme = css`
   }
 `
 
-const chooseTheme = buttonTheme => {
+const chooseTheme = (buttonTheme: 'primary' | 'secondary' | 'plain') => {
   switch(buttonTheme) {
     case 'primary':
       return primaryTheme;
@@ -49,7 +51,7 @@ const chooseTheme = buttonTheme => {
   }
 }
 
-const WrappedButton = styled.button`
+const StyledButton = styled.button`
   padding: ${ms(0)} ${ms(6)};
   border: 0;
   border-radius: ${ms(3)};
@@ -58,19 +60,31 @@ const WrappedButton = styled.button`
   font-weight: 300;
   display: inline-block;
   cursor: pointer;
+  -webkit-app-region: no-drag;
   ${({buttonTheme}) => chooseTheme(buttonTheme)};
 `
 
-function Button({ className, children, disabled, theme, onClick }) {
+type Props = {
+  className?: string,
+  children?: mixed,
+  disabled?: boolean,
+  theme?: 'primary' | 'secondary' | 'plain',
+  type?: string,
+  onClick?: Function
+};
+
+function Button(props: Props) {
+  const { className, children, disabled, theme, type, onClick } = props
   return (
-    <WrappedButton
+    <StyledButton
       onClick={onClick}
+      type={type || 'button'}
       buttonTheme={theme}
       disabled={disabled}
       className={className}
     >
       {children}
-    </WrappedButton>
+    </StyledButton>
   )
 }
 
