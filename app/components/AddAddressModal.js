@@ -7,6 +7,7 @@ import Button from './Button';
 import ADD_ADDRESS_TYPES from '../constants/AddAddressTypes';
 import Loader from './Loader';
 
+import { SeedPhraseGrid } from './CreateAccountSlide';
 import styles from './AddAddressModal.css';
 
 type Props = {
@@ -14,6 +15,7 @@ type Props = {
   activeTab: string,
   closeModal: Function,
   setActiveTab: Function,
+  generateAndUpdate: Function,
   importAddress: Function,
   seed: string,
   activationCode: string,
@@ -38,6 +40,7 @@ export default function AddAddress(props: Props) {
     activeTab,
     closeModal,
     setActiveTab,
+    generateAndUpdate,
     importAddress,
     seed,
     activationCode,
@@ -118,9 +121,41 @@ export default function AddAddress(props: Props) {
         );
       case ADD_ADDRESS_TYPES.SEED_PHRASE:
       case ADD_ADDRESS_TYPES.GENERATE_MNEMONIC:
+        let seedWords = seed.split(" ");
+        let wordsPerColumn = Math.ceil(seedWords.length / 3);
+        let seedCategories = [];
+
+        if (seedWords.length) {
+          let seedCategory = [];
+  
+          for (var i = 0; i < seedWords.length; i++) {
+  
+            seedCategory.push(seedWords[i]);
+  
+            if ((i+1) % wordsPerColumn == 0) {
+              seedCategories.push(seedCategory);
+              seedCategory = [];
+            }
+          }
+
+          if (seedCategory.length != 0) {
+            seedCategories.push(seedCategory);
+          }
+        }
+        let count = 0;
         return (
           <div>
-            <TextField
+            <div className={styles.prompt}>Write down the seed phrase and keep it secure. You will need it to import your account in case you ever reimport your wallet file.</div>
+            {seedWords.length && <div className={styles.seedContainer}>
+              {seedCategories.map(function(seedCategory) {
+                return (<div>
+                  {seedCategory.map(function(seed) {
+                    count++;
+                    return <div><span className="label">{count}</span>{seed}</div>
+                  })}
+                </div>) })}
+            </div>}
+            {/* <TextField
               floatingLabelText="Seed Words"
               style={{ width: '100%' }}
               value={seed}
@@ -143,7 +178,7 @@ export default function AddAddress(props: Props) {
                   confirmPassPhrase(newPassPhrase)
                 }
               />
-            </div>
+            </div> */}
           </div>
         );
       case ADD_ADDRESS_TYPES.FUNDRAISER:
@@ -190,13 +225,25 @@ export default function AddAddress(props: Props) {
     }
   }
 
-  return (
-    <Dialog modal open={open} bodyStyle={{ padding: '0px' }}>
-      {renderAppBar()}
-      {renderTabController()}
-      <div className={styles.addAddressBodyContainer}>
-        {renderAddBody()}
-        <div>
+  function renderButton() {
+    switch (activeTab) {
+      case ADD_ADDRESS_TYPES.GENERATE_MNEMONIC:
+        return (
+          <div>
+            <Button
+              buttonTheme="primary"
+              className={styles.nextButton}
+              onClick={importAddress}
+              disabled={isLoading}
+              small
+            >
+              Next
+            </Button>
+            <a href="javascript:;" className={styles.generate} onClick={generateAndUpdate}>Generate Another Seed Phrase</a>
+          </div>);
+        break;
+      default:
+        return (
           <Button
             buttonTheme="primary"
             onClick={importAddress}
@@ -204,7 +251,19 @@ export default function AddAddress(props: Props) {
             small
           >
             Import
-          </Button>
+          </Button>);
+        break;
+    }
+  }
+
+  return (
+    <Dialog modal open={open} bodyStyle={{ padding: '0px' }}>
+      {renderAppBar()}
+      {renderTabController()}
+      <div className={styles.addAddressBodyContainer}>
+        {renderAddBody()}
+        <div>
+          {renderButton()}
           {isLoading && <Loader />}
         </div>
       </div>

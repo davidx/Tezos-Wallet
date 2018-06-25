@@ -214,6 +214,22 @@ export function setActiveTab(activeTab) {
   };
 }
 
+export function generateAndUpdate() {
+  return async dispatch => {
+    try {
+      dispatch(setIsLoading(true));
+      const seed = await generateMnemonic();
+
+      dispatch(setIsLoading(false));
+      dispatch(updateSeed(seed));
+    } catch (e) {
+      console.error(e);
+      dispatch(addMessage(e.name, true));
+      dispatch(setIsLoading(false));
+    }
+  }
+}
+
 function setImportDuplicationError(dispatch) {
   dispatch(addMessage('Identity already exist', true));
 }

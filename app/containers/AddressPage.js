@@ -12,6 +12,7 @@ import MessageBar from '../components/MessageBar';
 import {
   clearAccountRefreshInterval,
   setActiveTab as setActiveAddAddressTab,
+  generateAndUpdate,
   closeAddAddressModal,
   importAddress,
   updatePrivateKey,
@@ -29,6 +30,7 @@ type Props = {
   activeTabAddAddressTab: string,
   addAddressModalIsOpen: boolean,
   setActiveAddAddressTab: Function,
+  generateAndUpdate: Function,
   closeAddAddressModal: Function,
   importAddress: Function,
   seed: string,
@@ -70,6 +72,7 @@ class AddressPage extends Component<Props> {
       activeTabAddAddressTab,
       addAddressModalIsOpen,
       setActiveAddAddressTab,
+      generateAndUpdate,
       closeAddAddressModal,
       importAddress,
       seed,
@@ -97,6 +100,7 @@ class AddressPage extends Component<Props> {
         <AddAddressModal
           open={addAddressModalIsOpen}
           setActiveTab={setActiveAddAddressTab}
+          generateAndUpdate={generateAndUpdate}
           closeModal={closeAddAddressModal}
           activeTab={activeTabAddAddressTab}
           importAddress={importAddress}
@@ -142,6 +146,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       setActiveAddAddressTab,
+      generateAndUpdate,
       closeAddAddressModal,
       importAddress,
       updatePrivateKey,

@@ -46,7 +46,7 @@
 }
 
 .addAddressBodyContainer {
-  padding: 40px;
+  padding: 40px 94px;
 }
 
 .addAddressTypeBody {
@@ -57,4 +57,47 @@
 .fundraiserPasswordContainer {
   display: flex;
   justify-content: space-between;
+}
+
+.seedContainer {
+  background-color: #f7faff;
+}
+
+.seedContainer > div {
+  width: 192px;
+  border-right: 2px solid rgba(148, 169, 209, 0.5);
+  display: inline-block;
+  padding: 18px 24px 42px;
+  line-height: 40px;
+  vertical-align: top;
+}
+
+.seedContainer > div:last-child {
+  border-right: 0;
+}
+
+.seedContainer span {
+  font-weight: bold;
+  color: #94a9d1;
+  margin-right: 24px;
+  display: inline-block;
+  width: 26px;
+  text-align: right;
+}
+
+.nextButton {
+  margin-top: 26px;
+}
+
+.prompt {
+  margin-bottom: 20px;
+}
+
+.generate {
+  font-size: 14px;
+  color: #2c7df7;
+  display: block;
+  float: right;
+  margin-top: 18px;
+  text-decoration: none;
 }
