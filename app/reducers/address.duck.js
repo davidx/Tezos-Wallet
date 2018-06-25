@@ -42,6 +42,7 @@ const UPDATE_ACTIVATION_CODE = 'UPDATE_ACTIVATION_CODE';
 const ADD_NEW_IDENTITY = 'ADD_NEW_IDENTITY';
 const ADD_NEW_ACCOUNT = 'ADD_NEW_ACCOUNT';
 const SELECT_ACCOUNT = 'SELECT_ACCOUNT';
+const UPDATE_SLIDE_COUNT = 'UPDATE_SLIDE_COUNT';
 
 /* ~=~=~=~=~=~=~=~=~=~=~=~= Actions ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= */
 export const clearEntireAddressState = actionCreator(
@@ -60,6 +61,7 @@ export const confirmPassPhrase = actionCreator(
   CONFIRM_PASS_PHRASE,
   'passPhrase'
 );
+export const updateSlideCount = actionCreator(UPDATE_SLIDE_COUNT, 'count');
 export const updateSeed = actionCreator(UPDATE_SEED, 'seed');
 export const updateActivationCode = actionCreator(UPDATE_ACTIVATION_CODE, 'activationCode');
 export const addNewIdentity = actionCreator(ADD_NEW_IDENTITY, 'identity');
@@ -76,6 +78,25 @@ const setSelectedAccount = actionCreator(
 );
 
 /* ~=~=~=~=~=~=~=~=~=~=~=~= Thunks ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= */
+
+export function confirmSeedBackupStep() {
+  return async (dispatch, state) => {
+    const slideCount = state().address.get('slideCount');
+
+    switch (slideCount) {
+      case 0:
+        dispatch(updateSlideCount(1));
+        break;
+    }
+  }
+}
+
+export function resetSeedBackupStep() {
+  return async (dispatch, state) => {
+    dispatch(updateSlideCount(0));
+  }
+}
+
 export function selectDefaultAccountOrOpenModal() {
   return async (dispatch, state) => {
     const initWalletState = state().walletInitialization;
@@ -349,7 +370,8 @@ const initState = fromJS({
   identities: [],
   selectedAccountHash: '',
   selectedAccount: createSelectedAccount({}),
-  selectedParentHash: ''
+  selectedParentHash: '',
+  slideCount: 0
 });
 
 export default function address(state = initState, action) {
@@ -407,6 +429,8 @@ export default function address(state = initState, action) {
         .set('selectedAccountHash', action.selectedAccountHash)
         .set('selectedParentHash', action.selectedParentHash)
         .set('selectedAccount', action.selectedAccount);
+    case UPDATE_SLIDE_COUNT:
+      return state.set('slideCount', action.count);
     default:
       return state;
   }

@@ -21,7 +21,10 @@ import {
   updatePassPhrase,
   confirmPassPhrase,
   passPhrase,
+  slideCount,
   updateSeed,
+  confirmSeedBackupStep,
+  resetSeedBackupStep,
   updateActivationCode,
   selectDefaultAccountOrOpenModal
 } from '../reducers/address.duck';
@@ -48,7 +51,10 @@ type Props = {
   confirmPassPhrase: Function,
   selectedAccountHash: string,
   selectDefaultAccountOrOpenModal: Function,
-  message: Object
+  message: Object,
+  slideCount: number,
+  confirmSeedBackupStep: Function,
+  resetSeedBackupStep: Function
 };
 
 const Container = styled.div`
@@ -76,6 +82,7 @@ class AddressPage extends Component<Props> {
       closeAddAddressModal,
       importAddress,
       seed,
+      slideCount,
       activationCode,
       username,
       passPhrase,
@@ -90,7 +97,9 @@ class AddressPage extends Component<Props> {
       updateSeed,
       updateActivationCode,
       selectedAccountHash,
-      message
+      message,
+      confirmSeedBackupStep,
+      resetSeedBackupStep
     } = this.props;
 
     return (
@@ -119,6 +128,9 @@ class AddressPage extends Component<Props> {
           updateSeed={updateSeed}
           updateActivationCode={updateActivationCode}
           selectedAccountHash={selectedAccountHash}
+          slideCount={slideCount}
+          confirmSeedBackupStep={confirmSeedBackupStep}
+          resetSeedBackupStep={resetSeedBackupStep}
         />
         <MessageBar message={message} />
       </Container>
@@ -132,6 +144,7 @@ function mapStateToProps({ address, message }) {
     addAddressModalIsOpen: address.get('open'),
     message: message.get('message'),
     seed: address.get('seed'),
+    slideCount: address.get('slideCount'),
     activationCode: address.get('activationCode'),
     username: address.get('username'),
     passPhrase: address.get('passPhrase'),
@@ -156,7 +169,9 @@ function mapDispatchToProps(dispatch) {
       confirmPassPhrase,
       updateSeed,
       updateActivationCode,
-      selectDefaultAccountOrOpenModal
+      selectDefaultAccountOrOpenModal,
+      confirmSeedBackupStep,
+      resetSeedBackupStep
     },
     dispatch
   );

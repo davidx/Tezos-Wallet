@@ -5,9 +5,10 @@ import classNames from 'classnames';
 
 import Button from './Button';
 import ADD_ADDRESS_TYPES from '../constants/AddAddressTypes';
+//import CREATE_ACCOUNT_TYPES from '../constants/CreateAccountTypes';
 import Loader from './Loader';
 
-import { SeedPhraseGrid } from './CreateAccountSlide';
+import { CreateAccountSlideBody, CreateAccountSlideFooter } from './CreateAccountSlide';
 import styles from './AddAddressModal.css';
 
 type Props = {
@@ -31,7 +32,9 @@ type Props = {
   confirmPassPhrase: Function,
   updateSeed: Function,
   updateActivationCode: Function,
-  selectedAccountHash: string
+  selectedAccountHash: string,
+  slideCount: number,
+  confirmSeedBackupStep: Function
 };
 
 export default function AddAddress(props: Props) {
@@ -56,7 +59,10 @@ export default function AddAddress(props: Props) {
     updatePassPhrase,
     confirmPassPhrase,
     updateSeed,
-    selectedAccountHash
+    selectedAccountHash,
+    slideCount,
+    confirmSeedBackupStep,
+    resetSeedBackupStep
   } = props;
 
   function renderAppBar() {
@@ -120,42 +126,9 @@ export default function AddAddress(props: Props) {
           </div>
         );
       case ADD_ADDRESS_TYPES.SEED_PHRASE:
-      case ADD_ADDRESS_TYPES.GENERATE_MNEMONIC:
-        let seedWords = seed.split(" ");
-        let wordsPerColumn = Math.ceil(seedWords.length / 3);
-        let seedCategories = [];
-
-        if (seedWords.length) {
-          let seedCategory = [];
-  
-          for (var i = 0; i < seedWords.length; i++) {
-  
-            seedCategory.push(seedWords[i]);
-  
-            if ((i+1) % wordsPerColumn == 0) {
-              seedCategories.push(seedCategory);
-              seedCategory = [];
-            }
-          }
-
-          if (seedCategory.length != 0) {
-            seedCategories.push(seedCategory);
-          }
-        }
-        let count = 0;
         return (
           <div>
-            <div className={styles.prompt}>Write down the seed phrase and keep it secure. You will need it to import your account in case you ever reimport your wallet file.</div>
-            {seedWords.length && <div className={styles.seedContainer}>
-              {seedCategories.map(function(seedCategory) {
-                return (<div>
-                  {seedCategory.map(function(seed) {
-                    count++;
-                    return <div><span className="label">{count}</span>{seed}</div>
-                  })}
-                </div>) })}
-            </div>}
-            {/* <TextField
+            <TextField
               floatingLabelText="Seed Words"
               style={{ width: '100%' }}
               value={seed}
@@ -178,9 +151,17 @@ export default function AddAddress(props: Props) {
                   confirmPassPhrase(newPassPhrase)
                 }
               />
-            </div> */}
+            </div>
           </div>
         );
+      case ADD_ADDRESS_TYPES.GENERATE_MNEMONIC:
+        return <CreateAccountSlideBody
+          seed={seed}
+          styles={styles}
+          slideCount={slideCount}
+          confirmSeedBackupStep={confirmSeedBackupStep}
+          resetSeedBackupStep={resetSeedBackupStep}
+        />;
       case ADD_ADDRESS_TYPES.FUNDRAISER:
       default:
         return (
@@ -218,19 +199,12 @@ export default function AddAddress(props: Props) {
   function renderButton() {
     switch (activeTab) {
       case ADD_ADDRESS_TYPES.GENERATE_MNEMONIC:
-        return (
-          <div>
-            <Button
-              buttonTheme="primary"
-              className={styles.nextButton}
-              onClick={importAddress}
-              disabled={isLoading}
-              small
-            >
-              Next
-            </Button>
-            <a href="javascript:;" className={styles.generate} onClick={generateAndUpdate}>Generate Another Seed Phrase</a>
-          </div>);
+        return <CreateAccountSlideFooter 
+          styles={styles}
+          confirmSeedBackupStep={confirmSeedBackupStep}
+          isLoading={isLoading}
+          generateAndUpdate={generateAndUpdate}
+        />
         break;
       default:
         return (
