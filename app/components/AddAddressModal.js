@@ -135,7 +135,7 @@ export default function AddAddress(props: Props) {
               disabled={activeTab === ADD_ADDRESS_TYPES.GENERATE_MNEMONIC}
               onChange={(_, newSeed) => updateSeed(newSeed)}
             />
-            <div className={styles.fundraiserPasswordContainer}>
+            <div className={styles.twoColumnContainer}>
               <TextField
                 floatingLabelText="Pass Phrase"
                 type="password"

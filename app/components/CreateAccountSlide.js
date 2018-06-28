@@ -2,7 +2,7 @@ import React from 'react';
 import { TextField } from 'material-ui';
 import Button from './Button';
 
-function setupSeedColumns() {
+function setupSeedColumns(seed) {
   const seedWords = seed.split(" ");
   let wordsPerColumn = Math.ceil(seedWords.length / 3);
   let seedColumns = [];
@@ -59,13 +59,35 @@ export function CreateAccountSlideBody(props) {
       return (
         <div>
           <a href="javascript:;" onClick={resetSeedBackupStep}>Back to Seed Phrase</a>
-          <div>In order to make sure that you properly backed up your seed phrase please type in the 7th word.</div>
-          <TextField
-            floatingLabelText="7th word"
-            style={{ width: '100%' }}
-            value={''}
-            onChange={(_, seedWord) => confirmSeedBackupStep(seedWord)}
-          />
+          <div>In order to ensure that you wrote down your seed phrase, please type in the following four seed words.</div>
+          <div className={styles.twoColumnContainer}>
+            <TextField
+              floatingLabelText="7th word"
+              style={{ width: '45%' }}
+              value={''}
+              onChange={(_, seedWord) => confirmSeedBackupStep(seedWord, 7)}
+            />
+            <TextField
+              floatingLabelText="7th word"
+              style={{ width: '45%' }}
+              value={''}
+              onChange={(_, seedWord) => confirmSeedBackupStep(seedWord)}
+            />
+          </div>
+          <div className={styles.twoColumnContainer}>
+            <TextField
+              floatingLabelText="7th word"
+              style={{ width: '45%' }}
+              value={''}
+              onChange={(_, seedWord) => confirmSeedBackupStep(seedWord)}
+            />
+            <TextField
+              floatingLabelText="7th word"
+              style={{ width: '45%' }}
+              value={''}
+              onChange={(_, seedWord) => confirmSeedBackupStep(seedWord)}
+            />
+          </div>
         </div>
       )
   }

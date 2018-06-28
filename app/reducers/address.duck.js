@@ -79,7 +79,7 @@ const setSelectedAccount = actionCreator(
 
 /* ~=~=~=~=~=~=~=~=~=~=~=~= Thunks ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= */
 
-export function confirmSeedBackupStep() {
+export function confirmSeedBackupStep(submittedWord, seedPosition) {
   return async (dispatch, state) => {
     const slideCount = state().address.get('slideCount');
 
