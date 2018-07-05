@@ -228,6 +228,7 @@ class AddressBlock extends Component<Props, State> {
             size={ms(1)}
             amount={balance}
             format={2}
+            rounded
             showTooltip
           />
         </AddressLabel>

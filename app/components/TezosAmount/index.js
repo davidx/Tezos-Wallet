@@ -30,6 +30,7 @@ const Amount = styled.span`
   display: inline-flex;
   align-items: center;
   letter-spacing: 0.6px;
+  line-height: 1;
 
   span {
     line-height: 0;
@@ -67,12 +68,12 @@ const copyToClipboard = text => {
 }
 
 const TezosAmount = (props: Props) => {
-  const { size, color, amount, iconName, weight, className, showTooltip ,format, content} = props;
+  const { size, color, amount, iconName, weight, className, showTooltip ,format, content, rounded} = props;
   const formatedBalance = `${formatAmount(amount)}`
   return showTooltip ? (
     <Tooltip position="top" content={<Content formatedBalance={formatedBalance} />}>
-      <Amount className={className} color={color} size={size} weight={weight}>
-        { format === 6 ? formatAmount(amount) : `~${formatAmount(amount, format)}` }
+      <Amount className={className} color={color} size={size} weight={weight} rounded>
+        { (rounded && format === 2) ? `~${formatAmount(amount, format)}` : formatAmount(amount, format) }
         {
           iconName
           && <Icon size={size} color={color} iconName={iconName}/>
@@ -81,7 +82,7 @@ const TezosAmount = (props: Props) => {
     </Tooltip>
     ) : (
     <Amount className={className} color={color} size={size} weight={weight} format={format}>
-      { format === 6 ? formatAmount(amount) : `~${formatAmount(amount, format)}` }
+      { (rounded && format === 2) ? `~${formatAmount(amount, format)}` : formatAmount(amount, format) }
       {
         iconName
           && <Icon size={size} color={color} iconName={iconName}/>

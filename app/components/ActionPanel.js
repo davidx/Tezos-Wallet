@@ -60,6 +60,7 @@ const TabList = styled.div`
 
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 50px;
 `;
 
 const SectionContainer = styled.div`

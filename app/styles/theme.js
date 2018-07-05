@@ -7,6 +7,8 @@ export const Theme = {
     light: '#FAFBFB',
     disabled: '#C8D0D3',
     transparent: 'transparent',
+    green: '#259c90',
+    red: '#fb6f66',
 
     // State colors
     error: '#F22121',
@@ -23,6 +25,8 @@ export const Theme = {
     gray3: '#5571a7',
     gray4: '#fcfcfc',
     gray5: '#9b9b9b',
+    gray6: '#e2e7f2',
+    gray7: '#4a4a4a',
 
     // font colors
     index0: '#94a9d1',
