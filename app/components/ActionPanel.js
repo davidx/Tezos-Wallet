@@ -157,7 +157,8 @@ class ActionPanel extends Component<Props, State> {
         return <Send isReady={ isReady } />;
       case TRANSACTIONS:
       default: {
-        return isEmpty(transactions.toJS())
+        const JSTransactions = transactions.toJS()
+        return isEmpty(JSTransactions)
           ?
           (
             <EmptyState
@@ -174,7 +175,7 @@ class ActionPanel extends Component<Props, State> {
           :
           (
             <Fragment>
-              <Transactions transactions={transactions} />
+              <Transactions transactions={JSTransactions} />
               <PageNumbers
                 currentPage={this.state.currentPage}
                 numberOfPages={4}
